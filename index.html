@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Robert Grinshtein | Research</title>
+    <style>
+        /* --- THEME CONFIGURATION --- */
+        :root {
+            --bg-color: #111111;        /* Very dark grey/black */
+            --text-main: #e0e0e0;       /* Off-white text */
+            --text-dim: #888888;        /* Grey for dates/details */
+            --accent: #46a5e5;          /* Bright Blue/Cyan accent */
+            --link-hover: #ffffff;      /* White on hover */
+            --font-main: 'Courier New', Courier, monospace; /* Terminal font */
+            --max-width: 850px;
+        }
+
+        /* --- GLOBAL RESET --- */
+        * { box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.5;
+            font-size: 16px;
+        }
+
+        /* --- LAYOUT --- */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            gap: 50px;
+        }
+
+        /* --- LEFT SIDEBAR (Navigation) --- */
+        .sidebar {
+            width: 200px;
+            flex-shrink: 0;
+            text-align: right;
+            border-right: 1px solid #333;
+            padding-right: 20px;
+        }
+
+        .my-photo {
+            width: 120px;
+            height: 120px;
+            background-color: #333; /* Placeholder for your image */
+            border-radius: 50%;     /* Circular */
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: var(--accent);
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+        }
+
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dim);
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        .contacts {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-top: 40px;
+        }
+
+        /* --- RIGHT CONTENT --- */
+        .content {
+            flex-grow: 1;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            border-bottom: 1px dashed #444;
+            padding-bottom: 5px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        /* --- PUBLICATIONS LIST --- */
+        .paper {
+            margin-bottom: 25px;
+        }
+        
+        .paper-title {
+            font-weight: bold;
+            color: var(--text-main);
+        }
+
+        .authors {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .venue {
+            font-style: italic;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        .links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            margin-right: 10px;
+            font-size: 0.85rem;
+            border: 1px solid #444;
+            padding: 1px 6px;
+            border-radius: 3px;
+        }
+
+        .links a:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* --- NEWS LIST --- */
+        .news-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .date {
+            min-width: 100px;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 700px) {
+            .container {
+                flex-direction: column;
+                gap: 30px;
+            }
+            .sidebar {
+                width: 100%;
+                text-align: left;
+                border-right: none;
+                border-bottom: 1px solid #333;
+                padding-bottom: 20px;
+                padding-right: 0;
+            }
+            .my-photo {
+                float: left;
+                margin-right: 20px;
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <!-- Replace src with your photo URL, e.g., "me.jpg" -->
+            <img src="https://via.placeholder.com/150" alt="My Photo" class="my-photo">
+            
+            <div class="name">Robert Grinshtein</div>
+            <div style="color: #888; font-size: 0.9rem;">Graduate student</div>
+
+            <ul class="nav-links">
+                <li><a href="#about" class="active">About</a></li>
+                <li><a href="#publications">Publications</a></li>
+                <li><a href="#news">News & Activities</a></li>
+                <li><a href="cv.pdf">CV (PDF)</a></li>
+            </ul>
+
+            <div class="contacts">
+                email: you [at] domain.edu<br>
+                github: <a href="#" style="color:#888">@yourhandle</a><br>
+                twitter: <a href="#" style="color:#888">@yourhandle</a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+            
+            <!-- ABOUT SECTION -->
+            <section id="about">
+                <h2>About Me</h2>
+                <p>
+                    I am a graduate student at <strong>Moscow State University</strong>, advised by Ivan Dyakonov.
+                </p>
+                <p>
+                    My research focuses on <strong>Quantum Computing</strong>, <strong>Quantum Optics</strong>, and <strong>Linear Optical Quantum Computing (LOQC)</strong>. 
+                    I enjoy building minimalist software and solving hard mathematical problems.
+                </p>
+            </section>
+
+            <!-- PUBLICATIONS SECTION -->
+            <section id="publications">
+                <h2>Selected Publications</h2>
+
+                <div class="paper">
+                    <div class="paper-title">Optimizing Large Scale Systems with Minimal Overhead</div>
+                    <div class="authors"><strong>Y. Name</strong>, A. Advisor, B. Colleague</div>
+                    <div class="venue">NeurIPS 2024 (Spotlight)</div>
+                    <div class="links">
+                        <a href="#">[PDF]</a> <a href="#">[Code]</a> <a href="#">[ArXiv]</a>
+                    </div>
+                </div>
+
+                <div class="paper">
+                    <div class="paper-title">A New Approach to Graph Theory Problems</div>
+                    <div class="authors">C. Partner, <strong>Y. Name</strong></div>
+                    <div class="venue">ICML 2023</div>
+                    <div class="links">
+                        <a href="#">[PDF]</a> <a href="#">[Website]</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NEWS SECTION -->
+            <section id="news">
+                <h2>News</h2>
+                <div class="news-item">
+                    <div class="date">Sep 2024</div>
+                    <div>Started my internship at <strong>Research Lab X</strong>.</div>
+                </div>
+                <div class="news-item">
+                    <div class="date">Jun 2024</div>
+                    <div>Paper accepted to NeurIPS 2024!</div>
+                </div>
+                <div class="news-item">
+                    <div class="date">Jan 2024</div>
+                    <div>Gave a talk at the Winter School on Optimization.</div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>
