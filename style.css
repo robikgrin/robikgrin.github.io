@@ -1,0 +1,314 @@
+/* --- 1. FONTS SETUP --- */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+/* Local Header Font */
+@font-face {
+    font-family: 'Fliege';
+    src: url('Fliege.otf') format('opentype'),
+         url('Fliege.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Local Math Font */
+@font-face {
+    font-family: 'Fira Math';
+    src: url('FiraMath-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* --- THEME CONFIGURATION --- */
+:root {
+    --bg-color: #111111;
+    --text-main: #e0e0e0;
+    --text-dim: #888888;
+    --border-color: #333333;
+    --accent: #00e640; /* Grin Green */
+    --link-hover: #ffffff;
+    
+    /* Code Block Colors */
+    --code-bg: #1a1a1a; 
+    --code-border: #333;
+    
+    /* --- FONTS --- */
+    --font-text: 'Ubuntu Mono', monospace;
+    --font-headers: 'Fliege', 'Courier New', monospace;
+    --font-math: 'Fira Math', 'Ubuntu Mono', serif;
+    
+    --max-width: 850px;
+    
+    /* MEDAL COLORS */
+    --gold: #FFD700;
+    --silver: #C0C0C0;
+    --bronze: #CD7F32;
+}
+
+/* --- LIGHT MODE --- */
+body.light-mode {
+    --bg-color: #f9f9f9;
+    --text-main: #222222;
+    --text-dim: #666666;
+    --border-color: #dddddd;
+    --accent: #009e2c;
+    --link-hover: #000000;
+    
+    --code-bg: #f4f4f4;
+    --code-border: #ccc;
+}
+
+/* --- GLOBAL RESET --- */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-text);
+    margin: 0;
+    padding: 40px 20px;
+    line-height: 1.6;
+    font-size: 17px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* --- TYPOGRAPHY --- */
+h1, h2, h3, .name, .paper-title, .blog-title {
+    font-family: var(--font-headers);
+    letter-spacing: 1px;
+}
+
+h1 {
+    font-size: 2rem;
+    color: var(--accent);
+    margin-top: 0;
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: 1.5rem;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 5px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--accent);
+}
+
+h3 {
+    font-size: 1.2rem;
+    color: var(--text-main);
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* --- LAYOUT --- */
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    gap: 50px;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    width: 200px;
+    flex-shrink: 0;
+    text-align: right;
+    border-right: 1px solid var(--border-color);
+    padding-right: 20px;
+    position: sticky;
+    top: 40px;
+    height: fit-content;
+}
+
+.my-photo {
+    width: 120px;
+    height: 120px;
+    background-color: #222;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    display: inline-block;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+.my-photo:hover { border-color: var(--accent); }
+
+.name-container { min-height: 1.5em; }
+.name {
+    font-weight: bold;
+    font-size: 1.4rem; 
+    margin-bottom: 5px;
+    color: var(--accent);
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 30px 0;
+}
+.nav-links li { margin-bottom: 10px; }
+.nav-links a {
+    color: var(--text-dim);
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+.nav-links a:hover {
+    color: var(--link-hover);
+    transform: translateX(-5px);
+}
+.nav-links a.active {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.contacts {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-top: 40px;
+    word-wrap: break-word; 
+    line-height: 1.4;
+}
+
+/* --- THEME TOGGLE --- */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: 1px solid var(--text-dim);
+    color: var(--text-main);
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.2s;
+}
+.theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* --- CONTENT --- */
+.content { flex-grow: 1; min-width: 0; }
+
+section {
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- BLOG LIST (blog.html) --- */
+.blog-entry {
+    display: flex;
+    align-items: baseline;
+    padding: 12px 0;
+    border-bottom: 1px dotted var(--border-color);
+    transition: transform 0.2s ease;
+}
+.blog-entry:hover { transform: translateX(5px); }
+.blog-date {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    width: 120px;
+    flex-shrink: 0;
+}
+.blog-title {
+    font-size: 1.1rem;
+    color: var(--text-main);
+    font-weight: bold;
+}
+.blog-entry:hover .blog-title { color: var(--accent); }
+
+/* --- POST CONTENT (post-template.html) --- */
+.post-meta {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin-bottom: 40px;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 20px;
+}
+
+.article-content p {
+    margin-bottom: 1.5em;
+    text-align: justify;
+}
+
+/* Code Blocks (Matches Shishqa style) */
+pre {
+    background-color: var(--code-bg);
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid var(--code-border);
+    overflow-x: auto;
+    font-size: 0.9rem;
+    margin: 25px 0;
+}
+
+/* Inline Code */
+:not(pre) > code {
+    background-color: var(--code-bg);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    border: 1px solid var(--border-color);
+}
+
+/* MathJax Font Override */
+mjx-container {
+    font-family: var(--font-math) !important;
+    color: var(--text-main);
+}
+
+/* --- OTHER ITEMS (Paper, Rewards) --- */
+.paper, .career-item, .reward-item { margin-bottom: 25px; transition: transform 0.2s ease; }
+.paper:hover, .career-item:hover, .reward-item:hover { transform: translateX(5px); }
+.paper-title { font-weight: bold; color: var(--text-main); }
+.authors { color: var(--text-dim); font-size: 0.95rem; }
+.venue { font-style: italic; color: var(--accent); font-size: 0.9rem; }
+.links a {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    border: 1px solid var(--border-color);
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+.links a:hover { border-color: var(--accent); color: var(--accent); }
+
+.career-item { display: flex; }
+.date { min-width: 120px; color: var(--text-dim); font-size: 0.9rem; margin-right: 20px; flex-shrink: 0; }
+
+.reward-item { display: flex; align-items: center; }
+.medal-icon { width: 50px; text-align: center; font-size: 1.4rem; margin-right: 15px; flex-shrink: 0; }
+.reward-text { flex-grow: 1; }
+.reward-date { display: block; font-size: 0.8rem; color: var(--text-dim); margin-top: 2px; }
+
+.gold { color: var(--gold); text-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+.silver { color: var(--silver); text-shadow: 0 0 10px rgba(192, 192, 192, 0.2); }
+.bronze { color: var(--bronze); text-shadow: 0 0 10px rgba(205, 127, 50, 0.2); }
+
+/* --- MOBILE --- */
+@media (max-width: 700px) {
+    .container { flex-direction: column; gap: 30px; }
+    .sidebar {
+        width: 100%; text-align: left; border-right: none;
+        border-bottom: 1px solid var(--border-color); padding-bottom: 20px;
+        position: relative; top: 0;
+    }
+    .my-photo { float: left; margin-right: 20px; margin-bottom: 0; }
+    .theme-toggle { top: 10px; right: 10px; }
+    .blog-entry { flex-direction: column; }
+    .blog-date { margin-bottom: 5px; }
+}

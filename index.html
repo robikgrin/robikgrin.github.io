@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> robikgrin </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- TOGGLE BTN -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Switch Theme">
+        <i class="fas fa-sun"></i>
+    </button>
+
+    <div class="container">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <img src="my_gif.gif" alt="My Photo" class="my-photo">
+            
+            <div class="name-container">
+                <!-- This will now use Fliege Font -->
+                <div class="name"><span id="typewriter"></span><span class="cursor">&nbsp;</span></div>
+            </div>
+            
+            <div style="color: var(--text-dim); font-size: 0.9rem;">Graduate student</div>
+
+            <ul class="nav-links">
+                <li><a href="#about" class="nav-item">About</a></li>
+                <li><a href="#publications" class="nav-item">Publications</a></li>
+                <li><a href="#career" class="nav-item">Career</a></li>
+                <li><a href="#rewards" class="nav-item">Rewards</a></li>
+                <li><a href="blog.html" class="nav-item">Blog</a></li>
+                <li><a href="cv.pdf">CV (PDF)</a></li>
+            </ul>
+
+            <div class="contacts">
+                email:<br>
+                grinshtein.ra21@<br>physics.msu.ru<br><br>
+                github: <a href="#" style="color: var(--text-dim)">@robikgrin</a><br>
+                telegram: <a href="#" style="color: var(--text-dim)">@robikgrin</a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+            
+            <!-- ABOUT -->
+            <section id="about">
+                <!-- This header will use Fliege Font -->
+                <h2>About Me</h2>
+                <p>
+                    I am a graduate student at <strong>Moscow State University</strong>, advised by Ivan Dyakonov.
+                </p>
+                <p>
+                    My research focuses on <strong>Quantum Computing</strong>, <strong>Quantum Optics</strong>, <strong>Linear Optical Quantum Computing (LOQC)</strong> and <strong>Machine Learning</strong>. 
+                    Also I do volunteer work in summer schools for high school students in Krasnoyarsk Summer School as a head of physical-mathematical tournament. 
+                </p>
+            </section>
+
+            <!-- PUBLICATIONS -->
+            <section id="publications">
+                <h2>Selected Publications</h2>
+                <div class="paper">
+                    <div class="paper-title">The spatial modes dynamics in curved multimode integral optical waveguides</div>
+                    <div class="authors"><strong>Grinshtein R.</strong>, Saygin M., Fldzhyan S., Straupe S., Kulik S.P.</div>
+                    <div class="venue">QTS 2024</div>
+                    <div class="links">
+                        <a href="#">[PDF]</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAREER -->
+            <section id="career">
+                <h2>Career</h2>
+                <div class="career-item">
+                    <div class="date">Jul 2025 - ...</div>
+                    <div>Head of physics and mathematics tournament in Krasnoyarsk Summer School</div>
+                </div>
+                <div class="career-item">
+                    <div class="date">Jul 2024 - ...</div>
+                    <div>Senior teacher at Science department of Krasnoyarsk Summer School.</div>
+                </div>
+                <div class="career-item">
+                    <div class="date">Jan 2024 - Sep 2025</div>
+                    <div>Research assistant at Quantum Technologies Center of MSU.</div>
+                </div>
+                <div class="career-item">
+                    <div class="date">Jul 2022 - Aug 2022</div>
+                    <div>Assistant at the Science department of Krasnoyarsk Summer School.</div>
+                </div>
+            </section>
+
+            <!-- REWARDS -->
+            <section id="rewards">
+                <h2>Rewards</h2>
+                
+                <div class="reward-item">
+                    <div class="medal-icon silver">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="reward-text">
+                        <div>Second place on All-Russian Quantum Hackathon</div>
+                        <span class="reward-date">Nov 2025</span>
+                    </div>
+                </div>
+
+                <div class="reward-item">
+                    <div class="medal-icon bronze">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="reward-text">
+                        <div>Third place on All-Russian Quantum Hackathon</div>
+                        <span class="reward-date">Feb 2024</span>
+                    </div>
+                </div>
+
+                <div class="reward-item">
+                    <div class="medal-icon silver">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div class="reward-text">
+                        <div>Second place at MSU mathematical analysis olimpiad</div>
+                        <span class="reward-date">Apr 2023</span>
+                    </div>
+                </div>
+
+                <div class="reward-item">
+                    <div class="medal-icon gold">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="reward-text">
+                        <div>Prize-winning places at Russian physics and mathematics olimpiads</div>
+                        <span class="reward-date">2019-2021</span>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
