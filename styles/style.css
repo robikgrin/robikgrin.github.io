@@ -5,8 +5,8 @@
 /* Local Header Font */
 @font-face {
     font-family: 'Fliege';
-    src: url('Fliege.otf') format('opentype'),
-         url('Fliege.ttf') format('truetype');
+    src: url('fonts/Fliege.otf') format('opentype'),
+         url('fonts/Fliege.otf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -14,18 +14,18 @@
 /* Local Math Font */
 @font-face {
     font-family: 'Fira Math';
-    src: url('FiraMath-Regular.otf') format('opentype');
+    src: url('fonts/FiraMath-Regular.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
 }
 
 /* --- THEME CONFIGURATION --- */
 :root {
-    --bg-color: #111111;
+    --bg-color: #0d0716;
     --text-main: #e0e0e0;
     --text-dim: #888888;
     --border-color: #333333;
-    --accent: #00e640; /* Grin Green */
+    --accent: #4fcd72; /* Grin Green */
     --link-hover: #ffffff;
     
     /* Code Block Colors */
@@ -35,9 +35,9 @@
     /* --- FONTS --- */
     --font-text: 'Ubuntu Mono', monospace;
     --font-headers: 'Fliege', 'Courier New', monospace;
-    --font-math: 'Fira Math', 'Ubuntu Mono', serif;
+    --font-math: 'Fira Math', 'Ubuntu Mono', monospace;
     
-    --max-width: 850px;
+    --max-width: 900px; /* Slightly wider to fit images */
     
     /* MEDAL COLORS */
     --gold: #FFD700;
@@ -47,10 +47,10 @@
 
 /* --- LIGHT MODE --- */
 body.light-mode {
-    --bg-color: #f9f9f9;
+    --bg-color: #ffffff;
     --text-main: #222222;
     --text-dim: #666666;
-    --border-color: #dddddd;
+    --border-color: #117711;
     --accent: #009e2c;
     --link-hover: #000000;
     
@@ -88,11 +88,11 @@ h1 {
 }
 
 h2 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     border-bottom: 1px dashed var(--border-color);
     padding-bottom: 5px;
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     color: var(--accent);
 }
 
@@ -105,7 +105,7 @@ h3 {
     padding-left: 10px;
 }
 
-a { text-decoration: none; color: inherit; }
+a { text-decoration: none; color: inherit; transition: 0.2s; }
 
 /* --- LAYOUT --- */
 .container {
@@ -117,7 +117,7 @@ a { text-decoration: none; color: inherit; }
 
 /* --- SIDEBAR --- */
 .sidebar {
-    width: 200px;
+    width: 220px;
     flex-shrink: 0;
     text-align: right;
     border-right: 1px solid var(--border-color);
@@ -139,12 +139,12 @@ a { text-decoration: none; color: inherit; }
 }
 .my-photo:hover { border-color: var(--accent); }
 
-.name-container { min-height: 1.5em; }
 .name {
     font-weight: bold;
     font-size: 1.4rem; 
     margin-bottom: 5px;
     color: var(--accent);
+    line-height: 1.2;
 }
 
 .nav-links {
@@ -155,8 +155,8 @@ a { text-decoration: none; color: inherit; }
 .nav-links li { margin-bottom: 10px; }
 .nav-links a {
     color: var(--text-dim);
-    transition: all 0.3s ease;
     display: inline-block;
+    font-size: 1.05rem;
 }
 .nav-links a:hover {
     color: var(--link-hover);
@@ -174,6 +174,7 @@ a { text-decoration: none; color: inherit; }
     word-wrap: break-word; 
     line-height: 1.4;
 }
+.contacts a:hover { color: var(--accent) !important; }
 
 /* --- THEME TOGGLE --- */
 .theme-toggle {
@@ -208,15 +209,37 @@ section.visible {
     transform: translateY(0);
 }
 
-/* --- BLOG LIST (blog.html) --- */
+/* --- BLOG LIST & TAGS --- */
+.tag-cloud {
+    margin-bottom: 25px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.tag-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-dim);
+    padding: 4px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: var(--font-text);
+    transition: all 0.2s;
+}
+.tag-btn:hover { border-color: var(--accent); color: var(--accent); }
+.tag-btn.active { background: var(--accent); color: #111; border-color: var(--accent); font-weight: bold; }
+
 .blog-entry {
     display: flex;
     align-items: baseline;
     padding: 12px 0;
     border-bottom: 1px dotted var(--border-color);
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, opacity 0.3s ease;
 }
 .blog-entry:hover { transform: translateX(5px); }
+.blog-entry.hidden { display: none; }
+
 .blog-date {
     font-size: 0.9rem;
     color: var(--text-dim);
@@ -230,7 +253,61 @@ section.visible {
 }
 .blog-entry:hover .blog-title { color: var(--accent); }
 
-/* --- POST CONTENT (post-template.html) --- */
+/* --- PUBLICATIONS (Vertical Layout) --- */
+.pub-item {
+    display: flex;
+    flex-direction: column; /* STACK VERTICALLY: Image Top, Text Bottom */
+    gap: 15px;              /* Space between image and text */
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px dashed var(--border-color);
+    transition: transform 0.2s ease;
+}
+
+.pub-item:last-child { border-bottom: none; }
+
+.pub-item:hover {
+    transform: translateX(5px);
+}
+
+.pub-thumb {
+    /* Adjust size now that it is on its own line */
+    width: 100%;            
+    max-width: 400px;       /* Limit width so it doesn't get too big */
+    height: auto;           /* Maintain aspect ratio */
+    max-height: 250px;      /* Limit height */
+    
+    object-fit: contain;    /* Ensure the whole diagram is seen */
+    background-color: #ffffff; /* White background for diagrams */
+    
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.pub-details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Keep text styles the same */
+.paper-title { font-weight: bold; color: var(--text-main); font-size: 1.2rem; line-height: 1.3; margin-bottom: 8px; }
+.authors { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 5px; }
+.venue { font-style: italic; color: var(--accent); font-size: 0.9rem; margin-bottom: 10px; }
+.links a {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    border: 1px solid var(--border-color);
+    padding: 2px 10px;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+.links a:hover { border-color: var(--accent); color: var(--accent); }
+
+/* --- POST CONTENT --- */
 .post-meta {
     font-size: 0.9rem;
     color: var(--text-dim);
@@ -238,13 +315,9 @@ section.visible {
     border-bottom: 1px dashed var(--border-color);
     padding-bottom: 20px;
 }
+.article-content p { margin-bottom: 1.5em; text-align: justify; }
 
-.article-content p {
-    margin-bottom: 1.5em;
-    text-align: justify;
-}
-
-/* Code Blocks (Matches Shishqa style) */
+/* Code Blocks */
 pre {
     background-color: var(--code-bg);
     padding: 15px;
@@ -254,8 +327,6 @@ pre {
     font-size: 0.9rem;
     margin: 25px 0;
 }
-
-/* Inline Code */
 :not(pre) > code {
     background-color: var(--code-bg);
     color: var(--accent);
@@ -264,28 +335,11 @@ pre {
     font-size: 0.9em;
     border: 1px solid var(--border-color);
 }
+mjx-container { font-family: var(--font-math) !important; color: var(--text-main); }
 
-/* MathJax Font Override */
-mjx-container {
-    font-family: var(--font-math) !important;
-    color: var(--text-main);
-}
-
-/* --- OTHER ITEMS (Paper, Rewards) --- */
-.paper, .career-item, .reward-item { margin-bottom: 25px; transition: transform 0.2s ease; }
-.paper:hover, .career-item:hover, .reward-item:hover { transform: translateX(5px); }
-.paper-title { font-weight: bold; color: var(--text-main); }
-.authors { color: var(--text-dim); font-size: 0.95rem; }
-.venue { font-style: italic; color: var(--accent); font-size: 0.9rem; }
-.links a {
-    color: var(--text-dim);
-    font-size: 0.85rem;
-    border: 1px solid var(--border-color);
-    padding: 1px 6px;
-    border-radius: 3px;
-    margin-right: 10px;
-}
-.links a:hover { border-color: var(--accent); color: var(--accent); }
+/* --- REWARDS & CAREER --- */
+.career-item, .reward-item { margin-bottom: 25px; transition: transform 0.2s ease; }
+.career-item:hover, .reward-item:hover { transform: translateX(5px); }
 
 .career-item { display: flex; }
 .date { min-width: 120px; color: var(--text-dim); font-size: 0.9rem; margin-right: 20px; flex-shrink: 0; }
@@ -299,8 +353,8 @@ mjx-container {
 .silver { color: var(--silver); text-shadow: 0 0 10px rgba(192, 192, 192, 0.2); }
 .bronze { color: var(--bronze); text-shadow: 0 0 10px rgba(205, 127, 50, 0.2); }
 
-/* --- MOBILE --- */
-@media (max-width: 700px) {
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 750px) {
     .container { flex-direction: column; gap: 30px; }
     .sidebar {
         width: 100%; text-align: left; border-right: none;
@@ -311,4 +365,8 @@ mjx-container {
     .theme-toggle { top: 10px; right: 10px; }
     .blog-entry { flex-direction: column; }
     .blog-date { margin-bottom: 5px; }
+    
+    /* Publication Mobile View */
+    .pub-item { flex-direction: column; gap: 15px; }
+    .pub-thumb { width: 100%; height: auto; max-height: 200px; }
 }

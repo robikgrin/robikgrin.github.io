@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> robikgrin </title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2503/2503401.png">
 </head>
 <body>
 
@@ -16,29 +17,27 @@
         
         <!-- SIDEBAR -->
         <aside class="sidebar">
-            <img src="my_gif.gif" alt="My Photo" class="my-photo">
+            <img src="pics/my_gif.gif" alt="My Photo" class="my-photo">
             
             <div class="name-container">
-                <!-- This will now use Fliege Font -->
                 <div class="name"><span id="typewriter"></span><span class="cursor">&nbsp;</span></div>
             </div>
             
             <div style="color: var(--text-dim); font-size: 0.9rem;">Graduate student</div>
 
             <ul class="nav-links">
-                <li><a href="#about" class="nav-item">About</a></li>
-                <li><a href="#publications" class="nav-item">Publications</a></li>
-                <li><a href="#career" class="nav-item">Career</a></li>
-                <li><a href="#rewards" class="nav-item">Rewards</a></li>
-                <li><a href="blog.html" class="nav-item">Blog</a></li>
-                <li><a href="cv.pdf">CV (PDF)</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="publications.html">Publications</a></li> 
+                <li><a href="index.html#career">Career</a></li>
+                <li><a href="index.html#rewards">Rewards</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="CV_2025.pdf">CV (PDF)</a></li>
             </ul>
 
             <div class="contacts">
-                email:<br>
-                grinshtein.ra21@<br>physics.msu.ru<br><br>
-                github: <a href="#" style="color: var(--text-dim)">@robikgrin</a><br>
-                telegram: <a href="#" style="color: var(--text-dim)">@robikgrin</a>
+                email:<a href="mailto:grinshtein.ra21@physics.msu.ru" style="color: var(--text-dim)"> grinshtein.ra21@<br>physics.msu.ru</a><br><br>
+                github: <a href="https://github.com/robikgrin" style="color: var(--text-dim)">@robikgrin</a><br>
+                telegram: <a href="https://t.me/robikgrin" style="color: var(--text-dim)">@robikgrin</a>
             </div>
         </aside>
 
@@ -56,19 +55,6 @@
                     My research focuses on <strong>Quantum Computing</strong>, <strong>Quantum Optics</strong>, <strong>Linear Optical Quantum Computing (LOQC)</strong> and <strong>Machine Learning</strong>. 
                     Also I do volunteer work in summer schools for high school students in Krasnoyarsk Summer School as a head of physical-mathematical tournament. 
                 </p>
-            </section>
-
-            <!-- PUBLICATIONS -->
-            <section id="publications">
-                <h2>Selected Publications</h2>
-                <div class="paper">
-                    <div class="paper-title">The spatial modes dynamics in curved multimode integral optical waveguides</div>
-                    <div class="authors"><strong>Grinshtein R.</strong>, Saygin M., Fldzhyan S., Straupe S., Kulik S.P.</div>
-                    <div class="venue">QTS 2024</div>
-                    <div class="links">
-                        <a href="#">[PDF]</a>
-                    </div>
-                </div>
             </section>
 
             <!-- CAREER -->
@@ -97,11 +83,21 @@
                 <h2>Rewards</h2>
                 
                 <div class="reward-item">
+                    <div class="medal-icon gold">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="reward-text">
+                        <div>Scholarship from Foundation for the Advancement of Theoretical Physics and Mathematics "BASIS" </div>
+                        <span class="reward-date">Jan 2025 - August 2025</span>
+                    </div>
+                </div>
+
+                <div class="reward-item">
                     <div class="medal-icon silver">
                         <i class="fas fa-trophy"></i>
                     </div>
                     <div class="reward-text">
-                        <div>Second place on All-Russian Quantum Hackathon</div>
+                        <div>Second place at All-Russian Quantum Hackathon</div>
                         <span class="reward-date">Nov 2025</span>
                     </div>
                 </div>
@@ -111,7 +107,7 @@
                         <i class="fas fa-trophy"></i>
                     </div>
                     <div class="reward-text">
-                        <div>Third place on All-Russian Quantum Hackathon</div>
+                        <div>Third place at All-Russian Quantum Hackathon</div>
                         <span class="reward-date">Feb 2024</span>
                     </div>
                 </div>
@@ -139,6 +135,6 @@
 
         </main>
     </div>
-    <script src="script.js"></script>
+    <script src="scripts/script.js"></script>
 </body>
 </html>

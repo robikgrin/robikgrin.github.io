@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog | Robert Grinshtein</title>
+    <title>Publications | Robert Grinshtein</title>
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2503/2503401.png">
@@ -30,10 +30,10 @@
             <div style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px;">Graduate student</div>
             <ul class="nav-links">
                 <li><a href="index.html#about" class="">About</a></li>
-                <li><a href="publications.html" class="">Publications</a></li>
+                <li><a href="publications.html" class="active">Publications</a></li>
                 <li><a href="index.html#career">Career</a></li>
                 <li><a href="index.html#rewards">Rewards</a></li>
-                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="blog.html" class="">Blog</a></li>
                 <li><a href="CV_2025.pdf">CV (PDF)</a></li>
             </ul>
             <div class="contacts">
@@ -44,16 +44,18 @@
         </aside>
         <main class="content">
             <section class="visible">
-                <h2>Log / Blog</h2>
-<div class="tag-cloud">
-<button class="tag-btn active" onclick="filterTags('all')">All</button>
-<button class="tag-btn" onclick="filterTags('math')">#math</button>
-</div>
+                <h2>Publications</h2>
 
-        <a href="posts/smth.html" class="blog-entry" data-tags="math">
-            <div class="blog-date">Nov 20, 2025</div>
-            <div class="blog-title">Smth</div>
-        </a>
+        <div class="pub-item">
+            <img src="pics/pubs/waveguide_model.png" alt="Paper Preview" class="pub-thumb">
+            <div class="pub-details">
+                <div class="paper-title">The spatial modes dynamics in curved multimode integral optical waveguides</div>
+                <div class="authors"><b>Grinshtein R.</b>, Saygin M., Fldzhyan S., Straupe S., Kulik S.P.</div>
+                <div class="venue">QTS 2024, Miass</div>
+                <div class="links"><a href="pics/pubs/Постер_QTS'24.pdf">[PDF]</a>
+</div>
+            </div>
+        </div>
             </section>
         </main>
     </div>
