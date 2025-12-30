@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Bomb paradox</title>
+    
+    <!-- NOTE THE '../' TO GO UP ONE LEVEL TO FIND STYLE.CSS -->
+    <link rel="stylesheet" href="../styles/style.css">
+    
+    <!-- PRISM JS (Code Highlighting) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <!-- MATHJAX (LaTeX) -->
+    <script>
+        MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+    <!-- Open Graph / Facebook / Telegram -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://robertgrin.github.io/blog/quantum-bomb.html">
+    <meta property="og:title" content="Quantum Bomb Paradox — Robert Grinshtein">
+    <meta property="og:description" content="How to detect a bomb without exploding it? Interaction-free measurement explained using Python and Math.">
+    <meta property="og:image" content="https://robertgrin.github.io/pics/blog/bomb_preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://robertgrin.github.io/blog/quantum-bomb.html">
+    <meta property="twitter:title" content="Quantum Bomb Paradox">
+    <meta property="twitter:description" content="How to detect a bomb without exploding it? Interaction-free measurement explained.">
+    <meta property="twitter:image" content="https://robertgrin.github.io/pics/blog/bomb_preview.png">
+</head>
+
+<body>
+
+    <button class="theme-toggle" id="theme-toggle" aria-label="Switch Theme">
+        <i class="fas fa-sun"></i>
+    </button>
+
+    <div class="container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <!-- Link back to Home (Up one level) -->
+            <a href="../index.html">
+                <!-- Image path adjusted -->
+                <img src="../pics/my_gif.gif" alt="Robert" class="my-photo">
+            </a>
+            
+            <div class="name">
+                <a href="../index.html">Robert<br>Grinshtein</a>
+            </div>
+            
+            <div style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px;">
+                Graduate student
+            </div>
+
+            <ul class="nav-links">
+                <!-- Simple "Back to Blog" navigation for posts -->
+                <li><a href="../blog.html">← Back to Blog</a></li>
+            </ul>
+        </aside>
+
+        <!-- POST CONTENT -->
+        <main class="content">
+            
+            <!-- HEADER -->
+            <h1>Quantum Bomb paradox</h1>
+            <div class="post-meta">Dec 30, 2025 • #quantum_mechanics</div>
+
+            <!-- ARTICLE BODY -->
+            <article>
+                <h3>Problem Statement</h3>
+                <p>
+                    This problem also well-known as <b>Elitzur–Vaidman bomb tester</b>. The idea is to use interaction-free measurement to detect the presence of a sensitive bomb without detonating it. Here is the problem statement:
+                    <blockquote>
+                    You have a collection of bombs, some of which are <b>functional</b> and some are <b>duds</b>. A functional bomb will explode if a single photon 
+                    interacts with it with $100\%$ probability, while a dud will not. Your task is to <b>identify the functional bombs</b> without detonating them.
+                    </blockquote>
+                    This case is the great example of how quantum mechanics can defy our classical intuition. 
+                </p>
+
+                <h3>Solution</h3>
+                The solution involves using a <b>Mach-Zehnder interferometer</b>, which splits a photon into two paths using a beam splitter. One path leads to the bomb, while the other path is free of any obstacles. 
+                <img src="../pics/blog/bomb0.png" alt="MZI" class="content-image-shadow">
+                Know I will briefly explain you how every optical element is working n this setup:
+                <ul>
+                    <li><b>Beam Splitter (BS):</b> A beam splitter divides an incoming photon into a superposition of two paths. For a beam splitter with transmition $\eta = 1/2$, the state transformation is given by:
+                        $$ \ket{\psi} \rightarrow \frac{1}{\sqrt{2}} (\ket{R} + i \ket{L}) $$
+                        where $\ket{L}$ and $\ket{R}$ represent the left and right paths, respectively.
+                    </li>
+                    <li><b>Mirrors (M):</b> Mirrors reflect the photon without changing its state, effectively redirecting it along a different path. Mathematically, a mirror can be represented as:
+                        $$ \ket{\psi} \rightarrow -\ket{\psi}$$
+                    </li>
+                    <li><b>Detectors (D):</b> Detectors measure the presence of a photon in a particular path. If a photon is detected, it collapses the superposition state.
+                    </li>
+                </ul>
+                <p>
+                Firstly we will consider the dud bomb case. Assume the bomb state as $\ket{B^{(0)}_{dud}}$ and detectors $D_1^{(0)}$, $D_2^{(0)}$. The photon state after the first beam splitter is:
+                $$ \ket{\psi} \ket{B^{(-)}_{dud}} \ket{D_1^{(0)} D_2^{(0)}} \xrightarrow{BS_1} \frac{1}{\sqrt{2}} \left( \ket{R} + i\ket{L} \right) \ket{B^{(-)}_{dud}} \ket{D_1^{(0)} D_2^{(0)}} $$
+
+                The photons then reflects off the mirrors:
+                $$ \xrightarrow{M_1, M_2} -\frac{1}{\sqrt{2}} \left( \ket{R} + i \ket{L} \right) \ket{B^{(-)}_{dud}} \ket{D_1^{(0)} D_2^{(0)}} $$
+                
+                The bomb is dub, so it does not interact with the photon. After the second beam splitter, the state becomes:
+                $$ \xrightarrow{BS_2} -i\ket{\varphi_2}\ket{B^{(-)}_{dud}} \ket{D_1^{(0)} D_2^{(0)}} = -i \ket{B^{(-)}_{dud}} \ket{D_1^{(0)} D_2^{(1)}}  $$
+
+                So, we will always detect the photon in the detector $D_2$ when the bomb is a dud.
+                </p>
+                <p>
+                Let's now consider the functional bomb case.
+                <img src="../pics/blog/bomb1.png" alt="MZI both cases" class="content-image-shadow">
+                Assume the bomb state as $\ket{B^{(0)}_{\text{boom}}}$. The state evolution is the same up to the interaction with the bomb. After the photon reaches the bomb, there are two possibilities: either the photon interacts with the bomb and causes it to explode, or it does not interact and continues its path. The state after the bomb interaction can be expressed as:
+                $$ \xrightarrow{KABOOM!} -\frac{1}{\sqrt{2}}\ket{B_{\text{boom}}^{(+)}} \ket{D_1^{(0)}, D_2^{(0)}} - \frac{1}{\sqrt{2}} \left(\ket{R} + i \ket{L} \right)\ket{B_{\text{boom}}^{(-)}} \ket{D_1^{(0)}, D_2^{(0)}} $$
+
+                The first term represents the case where the photon interacts with the bomb, causing it to explode. The second term represents the case where the photon does not interact with the bomb and continues its path. After passing through the second beam splitter, the state becomes:
+                $$ \xrightarrow{BS_2} -\frac{1}{\sqrt{2}}\ket{B_{\text{boom}}^{(+)}} \ket{D_1^{(0)}, D_2^{(0)}} - \frac{i}{2} \ket{B_{\text{boom}}^{(-)}} \ket{D_1^{(1)}, D_2^{(0)}} - \frac{1}{2} \ket{B_{\text{boom}}^{(-)}} \ket{D_1^{(0)}, D_2^{(1)}} $$
+
+                Now let's right a resume of the possible outcomes:
+                <ul>
+                    <li><b>Bomb explodes:</b> This occurs with a probability of $1/2$, corresponding to the first term in the final state.</li>
+                    <li><b>Photon detected at $D_1$:</b> This occurs with a probability of $1/4$, corresponding to the second term. In this case, we can infer that the bomb is functional without detonating it.</li>
+                    <li><b>Photon detected at $D_2$:</b> This occurs with a probability of $1/4$, corresponding to the third term. In this case, we cannot determine whether the bomb is functional or a dud.</li>
+                </ul>
+                So, only by detecting the photon at $D_1$, we can conclude that the bomb is functional without detonating it. This demonstrates the concept of interaction-free measurement, where we can gain information about a system without directly interacting with it.
+                </p>
+
+                <h3>How can we increase the probability of bomb detection?</h3>
+                <p>
+                    To increase the probability of detecting a functional bomb without detonating it, we can use a series of beam splitters and mirrors to create multiple paths for the photon. This setup is known as the <b>Quantum Zeno Effect</b>. By repeatedly measuring the presence of the photon in the path leading to the bomb, we can increase the likelihood of detecting the bomb without causing it to explode. But it will be the next post topic!
+                </p>
+            </article>
+
+            <div class="comments-section" style="margin-top: 50px;"></div>
+            <script src="https://giscus.app/client.js"
+                data-repo="robikgrin/robikgrin.github.io"
+                data-repo-id="R_kgDOQYyQRA"
+                data-category="General"
+                data-category-id="DIC_kwDOQYyQRM4C0ZPh"
+                data-mapping="title"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="cobalt"
+                data-lang="en"
+                crossorigin="anonymous"
+                async>
+            </script>
+        </div>
+
+        </main>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="../scripts/button.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>

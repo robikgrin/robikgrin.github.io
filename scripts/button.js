@@ -29,4 +29,31 @@ document.addEventListener('DOMContentLoaded', () => {
             icon.classList.add('fa-sun');
         }
     });
+
+    // Функция для обновления темы Giscus
+    function updateGiscusTheme(theme) {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        
+        // Выбираем тему Giscus в зависимости от вашей темы
+        // Если theme === 'light-mode', ставим светлую тему Giscus, иначе темную
+        const giscusTheme = theme === 'light-mode' ? 'light' : 'transparent_dark';
+
+        iframe.contentWindow.postMessage(
+            { giscus: { setConfig: { theme: giscusTheme } } },
+            'https://giscus.app'
+        );
+    }
+
+    // ВАЖНО: Вызовите эту функцию там, где вы переключаете класс body
+    // Например, внутри вашего обработчика клика:
+    themeToggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        
+        // ... ваш код сохранения в localStorage ...
+
+        // Проверяем, какая тема сейчас активна
+        const currentTheme = document.body.classList.contains('light-mode') ? 'light-mode' : 'dark-mode';
+        updateGiscusTheme(currentTheme);
+});
 });

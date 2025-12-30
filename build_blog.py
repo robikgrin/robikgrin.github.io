@@ -55,7 +55,7 @@ def get_html_structure(title, active_page, content_area):
                 <li><a href="CV_2025.pdf">CV (PDF)</a></li>
             </ul>
             <div class="contacts">
-                email:<a href="mailto:grinshtein.ra21@physics.msu.ru" style="color: var(--text-dim)"> grinshtein.ra21@<br>physics.msu.ru</a><br><br>
+                email:<a href="mailto:rogrinsh@gmail.com" style="color: var(--text-dim)"> rogrinsh@gmail.com</a><br><br>
                 github: <a href="https://github.com/robikgrin">@robikgrin</a><br>
                 telegram: <a href="https://t.me/robikgrin">@robikgrin</a>
             </div>
@@ -121,7 +121,7 @@ def build_blog():
     posts.sort(key=lambda x: x['dt'], reverse=True)
 
     # Generate Content HTML
-    content_html = '<h2>Log / Blog</h2>\n<div class="tag-cloud">\n'
+    content_html = '<h2>Blog</h2>\n<div class="tag-cloud">\n'
     content_html += '<button class="tag-btn active" onclick="filterTags(\'all\')">All</button>\n'
     for tag in sorted(list(all_tags)):
         content_html += f'<button class="tag-btn" onclick="filterTags(\'{tag}\')">#{tag}</button>\n'

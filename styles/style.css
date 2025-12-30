@@ -370,3 +370,28 @@ mjx-container { font-family: var(--font-math) !important; color: var(--text-main
     .pub-item { flex-direction: column; gap: 15px; }
     .pub-thumb { width: 100%; height: auto; max-height: 200px; }
 }
+
+/* --- IMAGES IN CONTENT --- */
+.content-image-shadow {
+    /* Ограничиваем ширину контейнером, но не больше реального размера картинки */
+    max-width: 100%; 
+    height: auto;           /* Сохраняем пропорции */
+    display: block;         /* Делаем блочным, чтобы работало центрирование */
+    margin: 30px auto;      /* Центрируем по горизонтали + отступы сверху/снизу */
+    
+    border-radius: 8px;     /* Чуть большее скругление */
+    
+    /* Тень и рамка */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); 
+    border: 1px solid var(--border-color); /* Используем цвет темы для рамки */
+    
+    /* Плавное изменение при смене темы */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Опционально: эффект при наведении */
+.content-image-shadow:hover {
+    border-color: var(--accent);
+    transform: scale(1.01);
+    transition: all 0.3s ease;
+}
