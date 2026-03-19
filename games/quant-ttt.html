@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Tic-Tac-Toe</title>
+    
+    <link rel="stylesheet" href="../styles/style.css">
+    
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+
+    <style>
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 2rem;
+        }
+        .ttt-board {
+            display: grid;
+            grid-template-columns: repeat(3, 120px);
+            grid-gap: 5px;
+            background-color: #333;
+            padding: 5px;
+            border-radius: 8px;
+        }
+        .ttt-cell {
+            width: 120px;
+            height: 120px;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+        .ttt-cell:hover {
+            background-color: #f0f0f0;
+        }
+        .status-panel {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html">Home</a>
+        <a href="../publications.html">Publications</a>
+        <a href="../blog.html">Blog</a>
+        <a href="../games.html" class="active">Games</a>
+    </nav>
+
+    <main class="content game-container">
+        <h1>Quantum Tic-Tac-Toe</h1>
+        
+        <div class="status-panel" id="status-text">
+            Ход Игрока 1 (Крестики). Выберите первую ячейку для квантовой связки.
+        </div>
+
+        <div class="ttt-board" id="board">
+            <div class="ttt-cell" id="cell-1"></div>
+            <div class="ttt-cell" id="cell-2"></div>
+            <div class="ttt-cell" id="cell-3"></div>
+            <div class="ttt-cell" id="cell-4"></div>
+            <div class="ttt-cell" id="cell-5"></div>
+            <div class="ttt-cell" id="cell-6"></div>
+            <div class="ttt-cell" id="cell-7"></div>
+            <div class="ttt-cell" id="cell-8"></div>
+            <div class="ttt-cell" id="cell-9"></div>
+        </div>
+    </main>
+
+    <script src="../scripts/quant_ttt_ui.js"></script>
+
+    <py-config>
+        # Настройка PyScript
+    </py-config>
+    
+    <py-script>
+        # Логика Python
+    </py-script>
+</body>
+</html>
