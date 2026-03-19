@@ -3,86 +3,920 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Tic-Tac-Toe</title>
+    <title>Quantum Tic-Tac-Toe | Robert Grinshtein</title>
     
     <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2503/2503401.png">
     
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        window.MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          },
+          startup: {
+            typeset: true
+          }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
-        .game-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 2rem;
+        .top-nav {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 20px; background-color: var(--bg-color);
+            border-bottom: 1px solid var(--border-color); position: sticky;
+            top: 0; z-index: 1000; flex-wrap: wrap;
         }
+        .nav-brand { display: flex; align-items: center; gap: 15px; }
+        .nav-photo {
+            width: 50px; height: 50px; border-radius: 50%;
+            border: 2px solid transparent; transition: border-color 0.3s ease;
+        }
+        .nav-photo:hover { border-color: var(--accent); }
+        .nav-name {
+            font-family: var(--font-headers); font-size: 1.2rem;
+            font-weight: bold; line-height: 1.1;
+        }
+        .nav-name a { color: var(--accent); }
+        
+        .nav-links-horizontal {
+            list-style: none; display: flex; gap: 20px;
+            margin: 0; padding: 0; align-items: center;
+        }
+        .nav-links-horizontal a { color: var(--text-dim); font-size: 1rem; }
+        .nav-links-horizontal a:hover, .nav-links-horizontal a.active {
+            color: var(--accent); font-weight: bold;
+        }
+
+        .btn-inline {
+            background: transparent; border: 1px solid var(--text-dim);
+            color: var(--text-main); padding: 6px 10px;
+            border-radius: 5px; cursor: pointer; transition: all 0.2s;
+            font-weight: bold;
+        }
+        .btn-inline:hover { border-color: var(--accent); color: var(--accent); }
+
+        .game-arena {
+            display: flex; justify-content: center; align-items: flex-start;
+            gap: 30px; margin-top: 2rem; flex-wrap: wrap;
+        }
+
+        .left-panel { display: flex; flex-direction: column; gap: 20px; width: 250px; }
+        .controls-panel {
+            padding: 15px; border-radius: 8px; background-color: var(--code-bg);
+            border: 1px solid var(--border-color); color: var(--text-main);
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .controls-panel select {
+            padding: 8px; font-size: 1rem; border-radius: 5px; border: 1px solid var(--border-color);
+            background-color: var(--bg-color); color: var(--text-main); cursor: pointer;
+        }
+        .btn-confirm {
+            background-color: var(--accent); color: white; padding: 10px;
+            border: none; border-radius: 5px; font-weight: bold; cursor: pointer;
+            font-size: 1.1rem; margin-top: 5px; transition: background 0.2s;
+        }
+        .btn-confirm:hover { background-color: #c62828; }
+
+        .status-panel {
+            font-size: 1.1rem; font-weight: bold; text-align: center;
+            padding: 15px; border-radius: 8px; background-color: var(--code-bg);
+            border: 1px solid var(--border-color); color: var(--text-main);
+        }
+        .score-table {
+            width: 100%; border-collapse: collapse; background-color: var(--code-bg);
+            border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);
+            font-family: var(--font-headers);
+        }
+        .score-table th {
+            background-color: var(--border-color); color: var(--text-main);
+            padding: 10px; text-align: left;
+        }
+        .score-table td {
+            padding: 10px; border-top: 1px solid var(--border-color); font-size: 1.2rem;
+        }
+        .score-val { font-weight: bold; text-align: center; }
+
+        .center-panel { display: flex; flex-direction: column; align-items: center; }
         .ttt-board {
-            display: grid;
-            grid-template-columns: repeat(3, 120px);
-            grid-gap: 5px;
-            background-color: #333;
-            padding: 5px;
-            border-radius: 8px;
+            display: grid; grid-gap: 5px; background-color: var(--border-color);
+            padding: 5px; border-radius: 8px;
         }
         .ttt-cell {
-            width: 120px;
-            height: 120px;
-            background-color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            text-align: center;
-            transition: background-color 0.2s;
+            position: relative; width: 90px; height: 90px;
+            background-color: var(--bg-color); display: flex;
+            align-items: center; justify-content: center;
+            cursor: pointer; transition: background-color 0.2s;
         }
-        .ttt-cell:hover {
-            background-color: #f0f0f0;
+        .ttt-cell:hover { background-color: var(--code-bg); }
+        .q-marks {
+            position: absolute; top: 4px; left: 4px; font-size: 13px;
+            color: var(--text-dim); display: flex; flex-wrap: wrap;
+            gap: 2px; font-family: var(--font-text);
         }
-        .status-panel {
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            font-weight: bold;
+        .c-mark { font-size: 55px; font-family: var(--font-headers); }
+        .c-mark.X { color: #d32f2f; }
+        .c-mark.O { color: #1976d2; }
+        
+        .preview-mark { opacity: 0.4; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(0.9); } 50% { transform: scale(1.1); } 100% { transform: scale(0.9); } }
+
+        .right-panel { display: flex; flex-direction: column; align-items: center; }
+        .graph-wrapper {
+            width: 350px; height: 350px; background: white; 
+            border-radius: 8px; border: 1px solid var(--border-color);
+            display: flex; justify-content: center; align-items: center; overflow: hidden;
+        }
+        .graph-wrapper img, .graph-wrapper svg { max-width: 100%; height: auto; }
+        .panel-title {
+            font-family: var(--font-headers); font-size: 1.2rem; 
+            margin-bottom: 10px; text-align: center; color: var(--accent);
+        }
+
+        .rules-container {
+            margin-top: 3rem; padding-top: 2rem; border-top: 2px dashed var(--border-color);
+        }
+        .rules-container h3 { text-align: center; color: var(--accent); margin-bottom: 20px;}
+        .rules-container p { text-align: justify; margin-bottom: 15px; line-height: 1.6;}
+        .rules-container ol, .rules-container ul { font-size: 1.05rem; padding-left: 20px; line-height: 1.6; }
+        .rules-container li { margin-bottom: 10px; }
+        
+        .math-box {
+            background-color: var(--code-bg); padding: 15px;
+            border-radius: 5px; border: 1px solid var(--border-color);
+            margin: 15px 0; text-align: center; overflow-x: auto;
+            font-size: 1.15rem;
+        }
+        
+        .example-graph {
+            width: 100%; max-width: 300px; height: 300px; 
+            margin: 20px auto; background: white; border-radius: 8px;
+            border: 1px solid var(--border-color); display: flex;
+            justify-content: center; align-items: center;
+        }
+
+        #loading-overlay {
+            color: var(--accent); font-weight: bold; text-align: center;
+            padding: 20px; margin-top: 40px;
+        }
+        
+        .lang-ru { display: none; }
+        
+        @media (max-width: 950px) {
+            .game-arena { flex-direction: column; align-items: center; }
+            .left-panel, .graph-wrapper { width: 100%; max-width: 350px; }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <a href="../index.html">Home</a>
-        <a href="../publications.html">Publications</a>
-        <a href="../blog.html">Blog</a>
-        <a href="../games.html" class="active">Games</a>
-    </nav>
+    
+    <header class="top-nav">
+        <div class="nav-brand">
+            <a href="../index.html"><img src="../pics/my_gif.gif" alt="Robert" class="nav-photo"></a>
+            <div class="nav-name"><a href="../index.html">Robert Grinshtein</a></div>
+        </div>
+        <ul class="nav-links-horizontal">
+            <li><a href="../index.html#about">About</a></li>
+            <li><a href="../publications.html">Publications</a></li>
+            <li><a href="../blog.html">Blog</a></li>
+            <li><a href="../games.html" class="active">Games</a></li>
+            <li><a href="../CV_2025.pdf">CV</a></li>
+            <li><button class="btn-inline" id="lang-toggle" onclick="toggleLang()">RU</button></li>
+            <li><button class="btn-inline" id="theme-toggle"><i class="fas fa-sun"></i></button></li>
+        </ul>
+    </header>
 
-    <main class="content game-container">
-        <h1>Quantum Tic-Tac-Toe</h1>
+    <div class="container" style="display: block; max-width: 1100px;">
+        <main class="content" style="width: 100%;">
+            <h2 style="text-align: center; margin-top: 20px;">Quantum Tic-Tac-Toe</h2>
+            
+            <div id="loading-overlay">
+                <i class="fas fa-spinner fa-spin"></i> 
+                <span class="lang-en">Loading Quantum Engine...</span>
+                <span class="lang-ru">Загрузка квантового движка...</span>
+            </div>
+
+            <div id="game-ui" style="display: none; flex-direction: column;">
+                
+                <div class="game-arena">
+                    <div class="left-panel">
+                        <div class="controls-panel">
+                            <label for="board-size-select" style="font-weight:bold;">
+                                <span class="lang-en">Board Size:</span>
+                                <span class="lang-ru">Размер поля:</span>
+                            </label>
+                            <select id="board-size-select">
+                                <option value="3">3x3</option>
+                                <option value="4">4x4</option>
+                                <option value="5">5x5</option>
+                            </select>
+                            
+                            <button id="btn-confirm" class="btn-confirm" style="display: none;" onclick="window.confirmCollapse()">
+                                <span class="lang-en">Confirm Collapse</span>
+                                <span class="lang-ru">Подтвердить исход</span>
+                            </button>
+                        </div>
+
+                        <div class="status-panel" id="status-text">
+                            Initializing...
+                        </div>
+                        
+                        <table class="score-table">
+                            <tr>
+                                <th><span class="lang-en">Player</span><span class="lang-ru">Игрок</span></th>
+                                <th style="text-align: center;"><span class="lang-en">Score</span><span class="lang-ru">Очки</span></th>
+                            </tr>
+                            <tr>
+                                <td style="color: #d32f2f;"><span class="lang-en">Xs (X)</span><span class="lang-ru">Крестики (X)</span></td>
+                                <td class="score-val" id="score-x">0</td>
+                            </tr>
+                            <tr>
+                                <td style="color: #1976d2;"><span class="lang-en">Os (O)</span><span class="lang-ru">Нолики (O)</span></td>
+                                <td class="score-val" id="score-o">0</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="center-panel">
+                        <div class="panel-title">
+                            <span class="lang-en">Game Board</span>
+                            <span class="lang-ru">Игровое поле</span>
+                        </div>
+                        <div style="position: relative; display: inline-block;">
+                            <div class="ttt-board" id="board"></div>
+                            <svg id="winning-lines" style="position: absolute; top: 0; left: 0; pointer-events: none; z-index: 10;"></svg>
+                        </div>
+                    </div>
+
+                    <div class="right-panel">
+                        <div class="panel-title">
+                            <span class="lang-en">Entanglement Graph</span>
+                            <span class="lang-ru">Граф запутанности</span>
+                        </div>
+                        <div style="font-size: 0.9rem; margin-bottom: 5px;">
+                            <span style="color: #d32f2f; font-weight: bold;"><span class="lang-en">— X moves</span><span class="lang-ru">— Ходы X</span></span> | 
+                            <span style="color: #1976d2; font-weight: bold;"><span class="lang-en">— O moves</span><span class="lang-ru">— Ходы O</span></span>
+                        </div>
+                        <div class="graph-wrapper" id="main-graph-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rules-container">
+                <div class="lang-en">
+                    <h3>Game Rules</h3>
+                    <ol>
+                        <li>Players take turns placing two entangled marks in two different cells. X's start.</li>
+                        <li>Cells can be empty, classically occupied, or hold quantum-entangled marks.</li>
+                        <li>If a cycle (loop) of entangled marks forms, the NEXT player must collapse the cycle into classical states, then make their normal turn.</li>
+                        <li>When collapsing, one mark from each pair survives. Unaffected quantum marks remain on the board.</li>
+                        <li>Score 1 point for every $N$ identical classical marks in a row (where NxN is the board size).</li>
+                    </ol>
+                </div>
+                <div class="lang-ru">
+                    <h3>Правила Игры</h3>
+                    <ol>
+                        <li>За ход игрок ставит два своих квантовых значка в две различные незанятые классически клетки. Крестики начинают.</li>
+                        <li>Каждая клетка поля может быть пуста, занята классическим знаком или занята квантово-запутанными значками. Таким образом в одной клетке может находится несколько квантовых значков или один классический.</li>
+                        <li>Если возникает цикл из квантово-запутанных значков, следующий игрок сначала коллапсирует его (выбирает исход измерения), а затем делает свой обычный ход.</li>
+                        <li>При коллапсе из каждой связанной пары сохраняется только один значок. Незатронутые запутанности сохраняются на поле.</li>
+                        <li>За каждые N одинаковых знаков в ряд (где $N$ - размер поля) дается 1 очко.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="rules-container" style="border-top: none; padding-top: 0;">
+                <div class="lang-en" style="grid-column: span 2;">
+                    <h3>Quantum mechanics of a game</h3>
+                    <p>The mechanics of Quantum Tic-Tac-Toe are strictly modeled using graph theory and the postulates of quantum mechanics.</p>
+                    
+                    <h4>1. A Move</h4>
+                    <p>In classical Tic-Tac-Toe, a move places a particle in a definite state $|c\rangle$. In the quantum version, a single turn places <b>one particle</b> in a quantum superposition across two cells. If player $i$ selects cells $u$ and $v$, the state of that specific move is:</p>
+                    <div class="math-box">
+                        $$ |\psi_i\rangle = \frac{1}{\sqrt{2}} (|u_i\rangle + |v_i\rangle) $$
+                    </div>
+                
+                    <p>Each $i$ index is the number of a move, so for X's $i$ is odd and for O's $i$ is even. This is how we can control the game.</p>
+                    
+                    <h4>2. The Global State & Exclusion Principle</h4>
+                    <p>Let $S = \{c_1, c_2, \dots, c_N\}$ be the set of cells. The global state of the board after $t$ moves is the tensor product of all individual move states:</p>
+                    <div class="math-box">
+                        $$ |\Psi\rangle = \bigotimes_{i=1}^{t} |\psi_i\rangle = \frac{1}{2^{t/2}} \bigotimes_{i=1}^{t} \left[|u_i \rangle + |v_i \rangle \right] $$
+                    </div>
+                    <p>where each $|u_i\rangle$ and $|v_i\rangle$ corresponds to the state of the particle placed in those cells by move $i$. The full expansion of this tensor product represents a superposition of all possible configurations of particles on the board.</p>
+                    <p>However, the game enforces a strict Pauli-like exclusion principle: <b>no two classical marks can occupy the same cell</b>. When we expand the tensor product, any basis state where two particles occupy the same cell $|c_k\rangle$ becomes non-physical and we need to destroy it (set its amplitude to zero). After that we renormalize the state to ensure it remains a valid quantum state.</p>
+                
+                    <p>As long as the graph of moves contains no cycles, there are multiple valid branches, and the system remains in a vast superposition.</p>
+                
+                    <h4>3. Simple example of how it works</h4>
+                    <p>The best way to show how quantum mechanics works is an example. Imagine a situation like on a picture below:</p>
+                    
+                    <div id="example-graph-container" class="example-graph"></div>
+                    
+                    <p>Firstly, X's made a move 1->2, then O's made a move 2->3, then X's made a move 3->1 and finally we got a cycle. So, in the beginning we had state:</p>
+                    <div class="math-box">
+                        $$ |\Phi \rangle = |1\rangle \otimes |2\rangle \otimes |3\rangle $$
+                    </div>
+                    <p>After the first move we have a superposition of two states:</p>
+                    <div class="math-box">
+                        $$ |\Psi_1\rangle = \frac{1}{\sqrt{2}} (|1\rangle_1 + |2\rangle_1) \otimes |2\rangle \otimes |3\rangle $$
+                    </div>
+                    <p>where lower index denotes the move number. After the second move we have a superposition of four states:</p>
+                    <div class="math-box">
+                        $$ |\Psi_2\rangle = \frac{1}{2} (|1\rangle_1 + |2\rangle_1) \otimes (|2\rangle_2 + |3\rangle_2) \otimes |3\rangle $$
+                    </div>
+                    <p>After the third move we have a superposition of eight states:</p>
+                    <div class="math-box">
+                        $$ |\Psi_3\rangle = \frac{1}{2^{3/2}} (|1\rangle_1 + |2\rangle_1) \otimes (|2\rangle_2 + |3\rangle_2) \otimes (|3\rangle_3 + |1\rangle_3) $$
+                    </div>
+                    <p>So, after rewritinng the state in normal form we have 8 terms, but only two of them are physical (the ones where no two particles occupy the same cell):</p>
+                    <div class="math-box">
+                        $$ |\Psi_{cycle}\rangle = \frac{1}{\sqrt{2}} (|1\rangle_1 \otimes |2\rangle_2 \otimes |3\rangle_3 + |2\rangle_1 \otimes |3\rangle_2 \otimes |1\rangle_3) = \frac{1}{\sqrt{2}} (|A\rangle + |B\rangle) $$
+                    </div>
+                    <p>Remember: the parity of lower index shows us the sign, which will be placed onto the node. So, f.e. $|1\rangle_1 \otimes |2\rangle_2 \otimes |3\rangle_3$ state is $|1\rangle_{X} \otimes |2\rangle_{O} \otimes |3\rangle_{X}$. Finally, O's can choose which variant on the board he wants: $A$ or $B$. When he chooses one of them, the system collapses to that state and the game continues. Thats it!!!</p>
+                
+                    <p>However, superposition can be more complicated with 9 nodes (like in 3x3 TTT). So, you don't need to worry about it, because there are calculations which are supported by the game engine, which can show you two possible outcomes of the states. You just need to choose one!</p>
+                
+                    <p>If you are really attentive reader, you may ask me: "Why we will only have two possible outcomes before collapsing the state?". This happens because of the fact, that when we get a cycle we need to colour it into two colors. Also each edge, which shows superposition of two same signs in different nodes, can connect only one coloured node for each superposition. These facts lead us to two possible outcomes.</p>
+                </div>
+
+                <div class="lang-ru" style="grid-column: span 2;">
+                    <h3>Квантовая механика игры</h3>
+                    <p>Механика квантовых крестиков-ноликов строго моделируется с использованием теории графов и постулатов квантовой механики.</p>
+                    
+                    <h4>1. Ход</h4>
+                    <p>В классических крестиках-ноликах ход помещает частицу в определенное состояние $|c\rangle$. В квантовой версии один ход помещает <b>одну частицу</b> в квантовую суперпозицию между двумя клетками. Если игрок $i$ выбирает клетки $u$ и $v$, состояние этого конкретного хода имеет вид:</p>
+                    <div class="math-box">
+                        $$ |\psi_i\rangle = \frac{1}{\sqrt{2}} (|u_i\rangle + |v_i\rangle) $$
+                    </div>
+                
+                    <p>Каждый индекс $i$ — это номер хода, поэтому для крестиков (X) $i$ нечетное, а для ноликов (O) $i$ четное. Именно так мы управляем игрой.</p>
+                    
+                    <h4>2. Состояние системы и Принцип запрета</h4>
+                    <p>Пусть $S = \{c_1, c_2, \dots, c_N\}$ — множество клеток. Глобальное состояние доски после $t$ ходов представляет собой тензорное произведение состояний всех отдельных ходов:</p>
+                    <div class="math-box">
+                        $$ |\Psi\rangle = \bigotimes_{i=1}^{t} |\psi_i\rangle = \frac{1}{2^{t/2}} \bigotimes_{i=1}^{t} \left[|u_i \rangle + |v_i \rangle \right] $$
+                    </div>
+                    <p>где каждое $|u_i\rangle$ и $|v_i\rangle$ соответствует состоянию частицы, помещенной в эти клетки на ходу $i$. Полное раскрытие этого тензорного произведения представляет собой суперпозицию всех возможных конфигураций частиц на доске.</p>
+                    <p>Однако в игре действует строгий принцип запрета, подобный принципу Паули: <b>две классические метки не могут занимать одну и ту же клетку</b>. Когда мы раскрываем тензорное произведение, любое базисное состояние, в котором две частицы занимают одну и ту же клетку $|c_k\rangle$, становится нефизичным, и нам нужно его уничтожить (приравнять его амплитуду к нулю). После этого мы перенормируем состояние, чтобы оно оставалось допустимым квантовым состоянием.</p>
+                
+                    <p>До тех пор, пока граф ходов не содержит циклов (петель), существует множество допустимых ветвей, и система остается в обширной суперпозиции.</p>
+                
+                    <h4>3. Простой пример того, как это работает</h4>
+                    <p>Лучший способ показать, как работает квантовая механика — это пример. Представьте ситуацию, как на картинке ниже:</p>
+                    
+                    <div id="example-graph-container-ru" class="example-graph"></div>
+                    
+                    <p>Сначала крестики (X) сделали ход 1->2, затем нолики (O) сделали ход 2->3, затем крестики сделали ход 3->1, и в итоге мы получили цикл. Таким образом, в самом начале у нас было состояние:</p>
+                    <div class="math-box">
+                        $$ |\Phi \rangle = |1\rangle \otimes |2\rangle \otimes |3\rangle $$
+                    </div>
+                    <p>После первого хода мы имеем суперпозицию двух состояний:</p>
+                    <div class="math-box">
+                        $$ |\Psi_1\rangle = \frac{1}{\sqrt{2}} (|1\rangle_1 + |2\rangle_1) \otimes |2\rangle \otimes |3\rangle $$
+                    </div>
+                    <p>где нижний индекс обозначает номер хода. После второго хода мы получаем суперпозицию четырех состояний:</p>
+                    <div class="math-box">
+                        $$ |\Psi_2\rangle = \frac{1}{2} (|1\rangle_1 + |2\rangle_1) \otimes (|2\rangle_2 + |3\rangle_2) \otimes |3\rangle $$
+                    </div>
+                    <p>После третьего хода возникает суперпозиция восьми состояний:</p>
+                    <div class="math-box">
+                        $$ |\Psi_3\rangle = \frac{1}{2^{3/2}} (|1\rangle_1 + |2\rangle_1) \otimes (|2\rangle_2 + |3\rangle_2) \otimes (|3\rangle_3 + |1\rangle_3) $$
+                    </div>
+                    <p>Итак, после переписывания состояния в нормальной форме мы получаем 8 слагаемых, но только два из них являются физичными (те, где никакие две частицы не занимают одну и ту же клетку):</p>
+                    <div class="math-box">
+                        $$ |\Psi_{cycle}\rangle = \frac{1}{\sqrt{2}} (|1\rangle_1 \otimes |2\rangle_2 \otimes |3\rangle_3 + |2\rangle_1 \otimes |3\rangle_2 \otimes |1\rangle_3) = \frac{1}{\sqrt{2}} (|A\rangle + |B\rangle) $$
+                    </div>
+                    <p>Но четность нижнего индекса показывает какой значок будет в клетке. Например, состояние $|1\rangle_1 \otimes |2\rangle_2 \otimes |3\rangle_3$ будет $|1\rangle_{X} \otimes |2\rangle_{O} \otimes |3\rangle_{X}$. Наконец, игрок за нолики (O) может выбрать, какой вариант на доске он хочет: $A$ или $B$. Когда он выбирает один из них, система коллапсирует в это состояние, и игра продолжается. Вот и всё!!!</p>
+                
+                    <p>Однако суперпозиция может быть гораздо сложнее с 9 узлами (как в крестиках-ноликах 3x3). Но вам не нужно об этом беспокоиться, поскольку все вычисления поддерживаются игровым движком, который покажет вам два возможных исхода состояний. Вам нужно лишь выбрать один из них!</p>
+                
+                    <p>Если вы действительно внимательный читатель, вы можете спросить меня: «Почему перед коллапсом состояния у нас будет ровно два возможных исхода?». Это происходит из-за того, что когда мы получаем цикл, нам нужно раскрасить его в два цвета. Кроме того, каждое ребро, которое показывает суперпозицию двух одинаковых знаков в разных узлах, может соединять только один окрашенный узел для каждой суперпозиции. Эти факты и приводят нас ровно к двум возможным исходам.</p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        window.currentLang = 'en';
         
-        <div class="status-panel" id="status-text">
-            Ход Игрока 1 (Крестики). Выберите первую ячейку для квантовой связки.
-        </div>
+        function toggleLang() {
+            window.currentLang = window.currentLang === 'en' ? 'ru' : 'en';
+            document.getElementById('lang-toggle').innerText = window.currentLang === 'en' ? 'RU' : 'EN';
+            
+            document.querySelectorAll('.lang-en').forEach(el => {
+                el.style.display = window.currentLang === 'en' ? 'block' : 'none';
+            });
+            document.querySelectorAll('.lang-ru').forEach(el => {
+                el.style.display = window.currentLang === 'ru' ? 'block' : 'none';
+            });
+            
+            if (window.quantumGameInstance) {
+                window.quantumGameInstance.update_status();
+            }
 
-        <div class="ttt-board" id="board">
-            <div class="ttt-cell" id="cell-1"></div>
-            <div class="ttt-cell" id="cell-2"></div>
-            <div class="ttt-cell" id="cell-3"></div>
-            <div class="ttt-cell" id="cell-4"></div>
-            <div class="ttt-cell" id="cell-5"></div>
-            <div class="ttt-cell" id="cell-6"></div>
-            <div class="ttt-cell" id="cell-7"></div>
-            <div class="ttt-cell" id="cell-8"></div>
-            <div class="ttt-cell" id="cell-9"></div>
-        </div>
-    </main>
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise();
+            }
+        }
+        
+        document.querySelectorAll('.lang-ru').forEach(el => el.style.display = 'none');
+    </script>
 
-    <script src="../scripts/quant_ttt_ui.js"></script>
+    <script src="../scripts/script.js"></script>
 
     <py-config>
-        # Настройка PyScript
+        packages = ["numpy", "matplotlib", "networkx"]
     </py-config>
     
     <py-script>
-        # Логика Python
+        import warnings
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
+        
+        import numpy as np
+        import math
+        if not hasattr(np, 'alltrue'):
+            np.alltrue = np.all
+            
+        import matplotlib.pyplot as plt
+        import networkx as nx
+        from pyscript import document, display, window
+        import random
+
+        class QuantumTicTacToeUI:
+            def __init__(self, board_size=3):
+                self.board_size = board_size
+                self.num_cells = self.board_size * self.board_size
+                
+                self.moves = [] 
+                self.move_counter = 1
+                
+                self.c_marks = {i: None for i in range(self.num_cells)}
+                self.scores = {'X': 0, 'O': 0}
+                self.winning_lines = {'X': [], 'O': []}
+                self.game_over = False
+                
+                self.current_player = 'X'
+                self.state = 'WAITING_FIRST'
+                self.first_cell = None
+                
+                self.cycle_component = set()
+                self.resolutions = []
+                self.current_res_idx = 0
+                
+                self.status_elem = document.getElementById("status-text")
+                self.score_x_elem = document.getElementById("score-x")
+                self.score_o_elem = document.getElementById("score-o")
+                
+                self.init_board_dom()
+                
+                document.getElementById("loading-overlay").style.display = "none"
+                document.getElementById("game-ui").style.display = "flex"
+                
+                window.quantumGameInstance = self
+                
+                self.update_status()
+                self.update_board_ui()
+                self.render_graph()
+
+            def init_board_dom(self):
+                board = document.getElementById("board")
+                board.innerHTML = ""
+                board.style.gridTemplateColumns = f"repeat({self.board_size}, 90px)"
+                
+                svg = document.getElementById("winning-lines")
+                svg_size = 5 + 95 * self.board_size
+                svg.setAttribute("width", str(svg_size))
+                svg.setAttribute("height", str(svg_size))
+                svg.innerHTML = ""
+                
+                from pyodide.ffi import create_proxy
+                
+                for i in range(self.num_cells):
+                    cell = document.createElement("div")
+                    cell.className = "ttt-cell"
+                    cell.id = f"cell-{i}"
+                    
+                    q_div = document.createElement("div")
+                    q_div.className = "q-marks"
+                    q_div.id = f"q-{i}"
+                    
+                    c_div = document.createElement("div")
+                    c_div.className = "c-mark"
+                    c_div.id = f"c-{i}"
+                    
+                    cell.appendChild(q_div)
+                    cell.appendChild(c_div)
+                    
+                    handler = create_proxy(lambda e, idx=i: self.on_cell_click(idx))
+                    cell.addEventListener("click", handler)
+                    board.appendChild(cell)
+
+            def get_lang(self):
+                try:
+                    return window.currentLang
+                except Exception:
+                    return 'en'
+
+            def update_status(self):
+                lang = self.get_lang()
+                
+                if self.game_over:
+                    win_text = "GAME OVER! Winner: " if lang == 'en' else "ИГРА ОКОНЧЕНА! Победитель: "
+                    self.status_elem.innerText = f"{win_text}{self.get_winner()}"
+                    self.status_elem.style.backgroundColor = "#d4edda"
+                    self.status_elem.style.color = "#155724"
+                    document.getElementById("btn-confirm").style.display = "none"
+                    if window.MathJax and hasattr(window.MathJax, 'typesetPromise'):
+                        window.MathJax.typesetPromise()
+                    return
+
+                color = "#ffcccc" if self.current_player == 'X' else "#cce5ff"
+                self.status_elem.style.backgroundColor = color
+                self.status_elem.style.color = "#333"
+
+                if self.state == 'WAITING_FIRST':
+                    txt = f"Turn: {self.current_player}. Select 1st cell." if lang == 'en' else f"Ход {self.current_player}. Выберите 1-ю ячейку."
+                    self.status_elem.innerText = txt
+                    document.getElementById("btn-confirm").style.display = "none"
+                elif self.state == 'WAITING_SECOND':
+                    txt = f"Turn: {self.current_player}. Select 2nd cell." if lang == 'en' else f"Ход {self.current_player}. Выберите 2-ю ячейку."
+                    self.status_elem.innerText = txt
+                elif self.state == 'COLLAPSE_MODE':
+                    txt = f"CYCLE! {self.current_player}, click any cycle cell to toggle outcome." if lang == 'en' else f"ПЕТЛЯ! {self.current_player}, кликните на петлю для смены исхода."
+                    self.status_elem.innerText = txt
+                    document.getElementById("btn-confirm").style.display = "block"
+
+                if window.MathJax and hasattr(window.MathJax, 'typesetPromise'):
+                    window.MathJax.typesetPromise()
+
+            def update_board_ui(self):
+                q_view = {i: [] for i in range(self.num_cells)}
+                for m in self.moves:
+                    mark = f"{m['player']}{m['id']}"
+                    q_view[m['c1']].append(mark)
+                    q_view[m['c2']].append(mark)
+
+                res_cells = {}
+                if self.state == 'COLLAPSE_MODE' and self.resolutions:
+                    res_cells, _ = self.resolutions[self.current_res_idx]
+
+                for q in range(self.num_cells):
+                    cell = document.getElementById(f"cell-{q}")
+                    q_div = document.getElementById(f"q-{q}")
+                    c_div = document.getElementById(f"c-{q}")
+                    
+                    cell.style.border = "1px solid var(--border-color)"
+                    if self.state == 'WAITING_SECOND' and self.first_cell == q:
+                        cell.style.border = "3px solid var(--accent)"
+                    elif self.state == 'COLLAPSE_MODE' and q in self.cycle_component:
+                        cell.style.border = "3px dashed orange"
+
+                    if self.c_marks[q] is not None:
+                        q_div.innerText = ""
+                        c_div.innerText = self.c_marks[q]
+                        c_div.className = f"c-mark {self.c_marks[q]}"
+                    elif self.state == 'COLLAPSE_MODE' and q in res_cells:
+                        q_div.innerText = ""
+                        c_div.innerText = res_cells[q]
+                        c_div.className = f"c-mark {res_cells[q]} preview-mark"
+                    else:
+                        c_div.innerText = ""
+                        c_div.className = "c-mark"
+                        q_div.innerText = " ".join(q_view[q])
+
+            def render_graph(self):
+                fig, ax = plt.subplots(figsize=(3.5, 3.5))
+                G = nx.MultiGraph()
+                
+                pos = {i: (i % self.board_size, self.board_size - 1 - i // self.board_size) 
+                        for i in range(self.num_cells)}
+                G.add_nodes_from(pos.keys())
+                
+                colors = ['#ffcccc' if self.c_marks[i]=='X' else '#cce5ff' if self.c_marks[i]=='O' else 'white' 
+                            for i in range(self.num_cells)]
+                node_size = 400 if self.board_size <= 3 else 250
+                font_size = 11 if self.board_size <= 3 else 8
+                
+                nx.draw_networkx_nodes(G, pos, ax=ax, node_color=colors, edgecolors='black', 
+                                        node_size=node_size, alpha=0.5)
+                nx.draw_networkx_labels(G, pos, {i: str(i+1) for i in range(self.num_cells)}, 
+                                        ax=ax, font_size=font_size)
+            
+                edge_counts = {}
+            
+                for m in self.moves:
+                    u, v = min(m['c1'], m['c2']), max(m['c1'], m['c2'])
+                    edge_key = (u, v)
+                    
+                    idx = edge_counts.get(edge_key, 0)
+                    edge_counts[edge_key] = idx + 1
+                    
+                    curvature = 0.2 * ((idx // 2 + 1) * (1 if idx % 2 == 0 else -1))
+                    if idx == 0: curvature = 0.15 
+            
+                    color = '#d32f2f' if m['player'] == 'X' else '#1976d2'
+            
+                    nx.draw_networkx_edges(
+                        G, pos, 
+                        edgelist=[(u, v)], 
+                        ax=ax, 
+                        width=2.5, 
+                        edge_color=color,
+                        connectionstyle=f"arc3,rad={curvature}",
+                        arrows=True,
+                        arrowstyle='-'
+                    )
+                
+                ax.margins(0.2)
+                ax.axis('off')
+                fig.tight_layout()
+                
+                container = document.getElementById("main-graph-container")
+                container.innerHTML = ""
+                display(fig, target="main-graph-container")
+                plt.close(fig)
+
+            def switch_player(self):
+                self.current_player = 'O' if self.current_player == 'X' else 'X'
+
+            def find_cycle(self):
+                adj = {i: [] for i in range(self.num_cells)}
+                for m in self.moves:
+                    adj[m['c1']].append((m['c2'], m['id']))
+                    adj[m['c2']].append((m['c1'], m['id']))
+
+                visited = set()
+                for start_node in range(self.num_cells):
+                    if start_node in visited: continue
+                    stack = [(start_node, None, None, {start_node})]
+                    
+                    while stack:
+                        curr, parent_node, parent_edge, path = stack.pop()
+                        visited.add(curr)
+                        for neighbor, edge_id in adj[curr]:
+                            if edge_id == parent_edge: continue
+                            if neighbor in path:
+                                return self.get_connected_component(adj, curr)
+                            stack.append((neighbor, curr, edge_id, path | {neighbor}))
+                return None
+
+            def get_connected_component(self, adj, start_node):
+                comp = set()
+                stack = [start_node]
+                while stack:
+                    curr = stack.pop()
+                    if curr not in comp:
+                        comp.add(curr)
+                        for neighbor, _ in adj[curr]:
+                            stack.append(neighbor)
+                return comp
+
+            def _generate_winning_lines(self):
+                lines = []
+                N = self.board_size
+                for r in range(N):
+                    lines.append([r * N + c for c in range(N)])
+                for c in range(N):
+                    lines.append([r * N + c for r in range(N)])
+                lines.append([i * N + i for i in range(N)])
+                lines.append([i * N + (N - 1 - i) for i in range(N)])
+                return lines
+
+            def calculate_scores(self):
+                lines = self._generate_winning_lines()
+                self.scores = {'X': 0, 'O': 0}
+                self.winning_lines = {'X': [], 'O': []}
+                
+                for line in lines:
+                    marks = [self.c_marks[i] for i in line]
+                    if marks[0] is not None and all(m == marks[0] for m in marks):
+                        self.scores[marks[0]] += 1
+                        self.winning_lines[marks[0]].append(line)
+                        
+                self.score_x_elem.innerText = str(self.scores['X'])
+                self.score_o_elem.innerText = str(self.scores['O'])
+
+            def draw_winning_lines(self):
+                svg = document.getElementById("winning-lines")
+                svg.innerHTML = ""
+                if not self.game_over:
+                    return
+                
+                for player, lines in self.winning_lines.items():
+                    color = '#d32f2f' if player == 'X' else '#1976d2'
+                    for line in lines:
+                        start_cell = line[0]
+                        end_cell = line[-1]
+                        
+                        N = self.board_size
+                        r1, c1 = start_cell // N, start_cell % N
+                        r2, c2 = end_cell // N, end_cell % N
+                        
+                        x1 = 5 + c1 * 95 + 45
+                        y1 = 5 + r1 * 95 + 45
+                        x2 = 5 + c2 * 95 + 45
+                        y2 = 5 + r2 * 95 + 45
+                        
+                        dx = x2 - x1
+                        dy = y2 - y1
+                        length = math.hypot(dx, dy)
+                        if length > 0:
+                            ux = dx / length
+                            uy = dy / length
+                            x1_ext = x1 - 35 * ux
+                            y1_ext = y1 - 35 * uy
+                            x2_ext = x2 + 35 * ux
+                            y2_ext = y2 + 35 * uy
+                        else:
+                            x1_ext, y1_ext, x2_ext, y2_ext = x1, y1, x2, y2
+                            
+                        line_elem = document.createElementNS("http://www.w3.org/2000/svg", "line")
+                        line_elem.setAttribute("x1", str(x1_ext))
+                        line_elem.setAttribute("y1", str(y1_ext))
+                        line_elem.setAttribute("x2", str(x2_ext))
+                        line_elem.setAttribute("y2", str(y2_ext))
+                        line_elem.setAttribute("stroke", color)
+                        line_elem.setAttribute("stroke-width", "10")
+                        line_elem.setAttribute("stroke-linecap", "round")
+                        line_elem.setAttribute("opacity", "0.6")
+                        svg.appendChild(line_elem)
+
+            def get_winner(self):
+                if self.scores['X'] > self.scores['O']: return 'X'
+                if self.scores['O'] > self.scores['X']: return 'O'
+                return 'Draw'
+
+            def check_game_over(self):
+                if sum(1 for v in self.c_marks.values() if v is not None) >= self.num_cells - 1:
+                    self.game_over = True
+                    self.calculate_scores()
+                    self.update_status()
+                    self.draw_winning_lines()
+
+            def prepare_resolutions(self):
+                comp_moves = [m for m in self.moves if m['c1'] in self.cycle_component or m['c2'] in self.cycle_component]
+                
+                valid_matchings = []
+                def backtrack(move_idx, current_assignment):
+                    if move_idx == len(comp_moves):
+                        valid_matchings.append(current_assignment.copy())
+                        return
+                    m = comp_moves[move_idx]
+                    
+                    if m['c1'] not in current_assignment:
+                        current_assignment[m['c1']] = m['player']
+                        backtrack(move_idx + 1, current_assignment)
+                        del current_assignment[m['c1']]
+                        
+                    if m['c2'] not in current_assignment:
+                        current_assignment[m['c2']] = m['player']
+                        backtrack(move_idx + 1, current_assignment)
+                        del current_assignment[m['c2']]
+
+                backtrack(0, {})
+                
+                res_m = {m['id'] for m in comp_moves}
+                
+                if not valid_matchings:
+                    self.resolutions = [({}, res_m)]
+                else:
+                    if len(valid_matchings) == 1:
+                        valid_matchings.append(valid_matchings[0])
+                    self.resolutions = [(res_c, res_m) for res_c in valid_matchings[:2]]
+                    
+                self.current_res_idx = 0
+
+            def confirm_collapse(self):
+                if self.state != 'COLLAPSE_MODE': return
+                
+                res_cells, res_moves = self.resolutions[self.current_res_idx]
+                
+                self.moves = [m for m in self.moves if m['id'] not in res_moves]
+                for cell, player in res_cells.items():
+                    self.c_marks[cell] = player
+
+                self.cycle_component = set()
+                self.resolutions = []
+                document.getElementById("btn-confirm").style.display = "none"
+                
+                self.check_game_over()
+                if not self.game_over:
+                    self.state = 'WAITING_FIRST' 
+                    
+                self.update_board_ui()
+                self.update_status()
+                self.render_graph()
+
+            def on_cell_click(self, q):
+                if self.game_over or self.c_marks[q] is not None: return
+
+                if self.state == 'COLLAPSE_MODE':
+                    if q in self.cycle_component:
+                        self.current_res_idx = 1 - self.current_res_idx
+                        self.update_board_ui()
+                    return
+
+                if self.state == 'WAITING_FIRST':
+                    self.first_cell = q
+                    self.state = 'WAITING_SECOND'
+                    self.update_board_ui()
+                    self.update_status()
+                    self.render_graph()
+                    
+                elif self.state == 'WAITING_SECOND':
+                    if self.first_cell == q:
+                        self.first_cell = None
+                        self.state = 'WAITING_FIRST'
+                        self.update_board_ui()
+                        self.update_status()
+                        self.render_graph()
+                        return
+
+                    self.moves.append({
+                        'id': self.move_counter,
+                        'player': self.current_player,
+                        'c1': self.first_cell,
+                        'c2': q
+                    })
+                    self.move_counter += 1
+                    self.switch_player()
+                    
+                    cycle_comp = self.find_cycle()
+                    if cycle_comp:
+                        self.cycle_component = cycle_comp
+                        self.prepare_resolutions()
+                        self.state = 'COLLAPSE_MODE'
+                    else:
+                        self.state = 'WAITING_FIRST'
+                        
+                    self.first_cell = None
+                    self.update_board_ui()
+                    self.update_status()
+                    self.render_graph()
+
+        def draw_tutorial_graph(container_id):
+            fig, ax = plt.subplots(figsize=(3, 3))
+            G = nx.MultiGraph()
+            
+            pos = {0: (0.5, 1), 1: (0, 0), 2: (1, 0)}
+            G.add_nodes_from([0, 1, 2])
+            
+            nx.draw_networkx_nodes(G, pos, ax=ax, node_color='white', edgecolors='black', node_size=600, alpha=0.5)
+            nx.draw_networkx_labels(G, pos, {0: "1", 1: "2", 2: "3"}, ax=ax, font_size=12)
+            
+            edges = [(0, 1, 'X'), (1, 2, 'O'), (2, 0, 'X')]
+            for u, v, player in edges:
+                u_draw, v_draw = min(u, v), max(u, v)
+                color = '#d32f2f' if player == 'X' else '#1976d2'
+                nx.draw_networkx_edges(
+                    G, pos, 
+                    edgelist=[(u_draw, v_draw)], 
+                    ax=ax, 
+                    width=3, 
+                    edge_color=color,
+                    connectionstyle="arc3,rad=0.15",
+                    arrows=True,
+                    arrowstyle='-'
+                )
+            
+            ax.margins(0.3)
+            ax.axis('off')
+            
+            container = document.getElementById(container_id)
+            if container:
+                container.innerHTML = ""
+                display(fig, target=container_id)
+            plt.close(fig)
+
+        global window_game
+        window_game = None
+
+        def start_new_game(size):
+            global window_game
+            window_game = QuantumTicTacToeUI(board_size=size)
+
+        from pyodide.ffi import create_proxy
+        def on_size_change(event):
+            size = int(event.target.value)
+            start_new_game(size)
+
+        select_elem = document.getElementById("board-size-select")
+        select_elem.addEventListener("change", create_proxy(on_size_change))
+
+        window.confirmCollapse = create_proxy(lambda: window_game.confirm_collapse() if window_game else None)
+
+        start_new_game(3)
+        draw_tutorial_graph("example-graph-container")
+        draw_tutorial_graph("example-graph-container-ru")
+
     </py-script>
 </body>
 </html>
